@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0F1317">
+<title>The System</title>
+<style>
+  :root{
+    --bg:#0F1317; --surface:#171D24; --surface2:#1E2630; --line:#2A333E;
+    --text:#EDEFF2; --muted:#8B95A1; --dim:#5A6572;
+    --gold:#E8B44A; --gold-dim:#8a6c2f;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.45;
+    padding-bottom:calc(84px + env(safe-area-inset-bottom));}
+  /* ---------- header ---------- */
+  header{padding:calc(14px + env(safe-area-inset-top)) 18px 14px;position:sticky;top:0;background:linear-gradient(var(--bg) 85%,rgba(15,19,23,0));z-index:20}
+  .hdr-row{display:flex;justify-content:space-between;align-items:baseline}
+  .hdr-date{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+  .hdr-streak{font-family:var(--mono);font-size:12px;color:var(--gold)}
+  h1.hdr-title{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+  .hdr-sub{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:2px}
+  .hdr-sub b{color:var(--gold);font-weight:600}
+  /* ---------- layout ---------- */
+  main{padding:0 14px}
+  section.tab{display:none}
+  section.tab.active{display:block}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+  .card.now{border-color:var(--gold-dim);box-shadow:inset 3px 0 0 var(--gold)}
+  .card-head{display:flex;justify-content:space-between;align-items:center;padding:13px 15px 10px}
+  .card-title{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .now .card-title{color:var(--gold)}
+  .card-count{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .bar{height:3px;background:var(--surface2);margin:0 15px;border-radius:2px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0%;background:var(--gold);border-radius:2px;transition:width .25s ease}
+  .grp{padding:10px 6px 6px}
+  .grp-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);padding:8px 10px 4px}
+  /* ---------- check rows ---------- */
+  .row{display:flex;gap:12px;align-items:flex-start;padding:9px 10px;border-radius:10px;cursor:pointer;user-select:none;-webkit-user-select:none}
+  .row:active{background:var(--surface2)}
+  .box{flex:none;width:22px;height:22px;margin-top:1px;border:1.5px solid var(--dim);border-radius:7px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .row.done .box{background:var(--gold);border-color:var(--gold)}
+  .row.done .box::after{content:"";width:6px;height:10px;border:solid #0F1317;border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-2px}
+  .row .txt{font-size:15px}
+  .row .sub{display:block;font-size:12.5px;color:var(--muted);margin-top:1px}
+  .row.done .txt{color:var(--dim);text-decoration:line-through;text-decoration-color:var(--gold-dim)}
+  .num{font-family:var(--mono);font-size:11px;color:var(--dim);flex:none;width:18px;text-align:right;margin-top:4px}
+  /* ---------- misc ---------- */
+  .pill{display:inline-block;font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid var(--gold-dim);border-radius:99px;padding:2px 9px;margin:0 0 8px}
+  .note{font-size:13px;color:var(--muted);padding:4px 15px 14px}
+  .plain{padding:6px 15px 14px;font-size:14.5px;color:var(--text)}
+  .plain p{margin-bottom:8px}
+  .plain b{color:var(--gold);font-weight:600}
+  .kv{display:flex;justify-content:space-between;padding:8px 15px;border-top:1px solid var(--line);font-size:14px}
+  .kv:first-of-type{border-top:none}
+  .kv .k{color:var(--muted)}
+  .kv .v{font-family:var(--mono);font-size:13px;text-align:right}
+  details{border-top:1px solid var(--line)}
+  details:first-of-type{border-top:none}
+  summary{list-style:none;display:flex;justify-content:space-between;align-items:center;padding:13px 15px;cursor:pointer;font-weight:600;font-size:15px}
+  summary::-webkit-details-marker{display:none}
+  summary .tag{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400}
+  summary::after{content:"+";font-family:var(--mono);color:var(--dim);margin-left:10px}
+  details[open] summary::after{content:"–"}
+  details[open] summary{color:var(--gold)}
+  .ex{display:flex;justify-content:space-between;gap:10px;padding:7px 15px;font-size:14.5px;border-top:1px solid rgba(42,51,62,.5)}
+  .ex .sets{font-family:var(--mono);font-size:13px;color:var(--gold);flex:none}
+  .steps{padding:2px 15px 13px}
+  .steps li{margin:0 0 7px 18px;font-size:14px;color:var(--text)}
+  .steps li b{color:var(--gold);font-weight:600}
+  .reset-btn{font-family:var(--mono);font-size:11px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:99px;padding:3px 10px;cursor:pointer}
+  /* ---------- feeds ---------- */
+  .feed-time{font-family:var(--mono);font-size:12px;color:var(--gold);flex:none;width:52px;margin-top:3px}
+  /* ---------- bottom nav ---------- */
+  nav{position:fixed;bottom:0;left:0;right:0;background:rgba(15,19,23,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:30}
+  nav button{flex:1;background:none;border:none;color:var(--dim);font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+    text-transform:uppercase;padding:8px 0 6px;cursor:pointer;display:flex;flex-direction:column;gap:5px;align-items:center}
+  nav button .dot{width:5px;height:5px;border-radius:99px;background:transparent}
+  nav button.on{color:var(--gold)}
+  nav button.on .dot{background:var(--gold)}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-row"><span class="hdr-date" id="hdrDate"></span><span class="hdr-streak" id="hdrStreak"></span></div>
+  <h1 class="hdr-title">The System</h1>
+  <div class="hdr-sub" id="hdrSub"></div>
+</header>
+
+<main>
+  <!-- ============ TODAY ============ -->
+  <section class="tab active" id="tab-today">
+    <div class="card now" id="card-morning">
+      <div class="card-head"><span class="card-title">Morning</span><span class="card-count" id="cnt-morning"></span></div>
+      <div class="bar"><i id="bar-morning"></i></div>
+      <div class="grp" id="list-morning"></div>
+      <div class="note">Minimum viable morning if the day blows up: weigh-in, bed, water, walk, shake, gym.</div>
+    </div>
+
+    <div class="card" id="card-feeds">
+      <div class="card-head"><span class="card-title">Eating clock</span><span class="card-count" id="cnt-feeds"></span></div>
+      <div class="bar"><i id="bar-feeds"></i></div>
+      <div class="grp" id="list-feeds"></div>
+      <div class="note">Three alarms labeled FEED: 1:30, 4:00, 6:30. When one fires, eat within 15 minutes. Times shift when job hours land.</div>
+    </div>
+
+    <div class="card" id="card-night">
+      <div class="card-head"><span class="card-title">Night</span><span class="card-count" id="cnt-night"></span></div>
+      <div class="bar"><i id="bar-night"></i></div>
+      <div class="grp" id="list-night"></div>
+      <div class="note">No clock. Shutdown starts about an hour before tonight's bedtime. The phone never crosses the mattress.</div>
+    </div>
+  </section>
+
+  <!-- ============ GYM ============ -->
+  <section class="tab" id="tab-gym">
+    <div class="card">
+      <div class="kv"><span class="k">Split</span><span class="v">PPL ×2 · Sun off</span></div>
+      <div class="kv"><span class="k">Block · Week</span><span class="v" id="blockInfo"></span></div>
+      <div class="kv"><span class="k">Warm-up</span><span class="v">5 min incline walk + 2 ramp sets</span></div>
+      <div class="kv"><span class="k">Rest</span><span class="v">~3 min heavy · ~90 sec iso</span></div>
+      <div class="kv"><span class="k">Every session ends</span><span class="v">30-sec dead hang</span></div>
+    </div>
+    <div class="card" id="gymDays"></div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Progression</span></div>
+      <div class="plain">
+        <p><b>Double progression.</b> Each lift has a rep range. Add reps until every set hits the top, then add weight and restart at the bottom. Beat the logbook somewhere every session. Log every set in Hevy.</p>
+        <p><b>Blocks are 5 weeks.</b> Weeks 1–4 climb. Week 5 deload: same lifts, 2 easy sets each. Then Block 2: core lifts stay, accessories rotate.</p>
+        <p><b>Week 1 is calibration.</b> Stop every set 2–3 reps shy of failure while finding working weights. Real climbing starts week 2.</p>
+        <p><b>Banned for life:</b> barbell back squat, barbell bench, pull-ups, lunges, split squats. Built for 6'9" leverages on purpose.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Night stretch · 10 min</span></div>
+      <ol class="steps">
+        <li>Kneeling hip flexor, <b>60 sec/side</b></li>
+        <li>Lying hamstring (strap or towel), <b>60 sec/side</b></li>
+        <li>Figure-4 glute, <b>60 sec/side</b></li>
+        <li>Doorway chest, <b>60 sec</b></li>
+        <li>Overhead lat reach / side bend, <b>30 sec/side</b></li>
+        <li>Child's pose, <b>90 sec</b> slow breathing</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ MEALS ============ -->
+  <section class="tab" id="tab-meals">
+    <div class="card">
+      <div class="kv"><span class="k">Opening targets</span><span class="v">~3,900–4,100 kcal · 210g+ protein</span></div>
+      <div class="kv"><span class="k">Rate</span><span class="v">+0.75 lb/week · MacroFactor adjusts</span></div>
+      <div class="kv"><span class="k">Core rule</span><span class="v">cook 2 days · microwave · sauce after</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">Shakes</span></div>
+      <details open>
+        <summary>Monster shake <span class="tag">~1,050 kcal · 70g P · daily</span></summary>
+        <ol class="steps"><li>2 cups whole milk</li><li>2 scoops chocolate whey</li><li>1 banana</li><li>2 tbsp peanut butter</li><li>1/2 cup quick oats</li><li>1 tbsp honey + ice</li><li><b>5g creatine</b></li></ol>
+      </details>
+      <details>
+        <summary>Shake 2 · vanilla berry <span class="tag">~600 kcal · lever 1</span></summary>
+        <ol class="steps"><li>1.5 cups whole milk</li><li>1 scoop vanilla whey</li><li>1 cup frozen berries</li><li>Big spoon Greek yogurt</li><li>Honey</li></ol>
+      </details>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">The menu</span></div>
+      <div class="kv"><span class="k">Breakfast A</span><span class="v">breakfast burrito + green salsa</span></div>
+      <div class="kv"><span class="k">Breakfast B</span><span class="v">egg · beef · potato bowl</span></div>
+      <div class="kv"><span class="k">Post-gym A</span><span class="v">beef burrito bowl</span></div>
+      <div class="kv"><span class="k">Post-gym B</span><span class="v">salsa verde chicken bowl</span></div>
+      <div class="kv"><span class="k">Dinner A</span><span class="v">ranch chicken pasta + spinach</span></div>
+      <div class="kv"><span class="k">Dinner B</span><span class="v">cheesy taco beef pasta</span></div>
+      <div class="kv"><span class="k">Mini meals</span><span class="v">mini bowls · burrito · yogurt bowl · PB bagel</span></div>
+      <div class="kv"><span class="k">Night snack</span><span class="v">yogurt bowl or PB toast + milk</span></div>
+      <div class="note">Sauces: green salsa, ranch, mayo, teriyaki. Never: ketchup, mustard, pickles, olives. Avocado sliced fresh, granola added at eat time.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">Cooking</span></div>
+      <details>
+        <summary>Salsa verde chicken <span class="tag">pressure cooker</span></summary>
+        <ol class="steps"><li>3 lbs chicken breast in the pot</li><li>Full 12 oz jar TJ green salsa + big pinch salt</li><li>High pressure <b>12 min</b>, natural release 5, then vent</li><li>Shred with two forks, stir into the juices</li><li>Portion. The sauce keeps it juicy all week</li></ol>
+      </details>
+      <details>
+        <summary>Taco beef <span class="tag">griddle</span></summary>
+        <ol class="steps"><li>3 lbs 80/20 ground beef, brown and break up</li><li>Drain only some fat</li><li>Taco seasoning + splash water, 2 min</li><li>Portion</li></ol>
+      </details>
+      <details>
+        <summary>White rice <span class="tag">pressure cooker</span></summary>
+        <ol class="steps"><li>4 cups rice, rinsed</li><li>1:1 water, pinch of salt</li><li>High pressure <b>4 min</b>, natural release 10</li><li>Reheat rule: splash of water, lid cracked</li></ol>
+      </details>
+      <details>
+        <summary>Breakfast burritos <span class="tag">batch of 10–12</span></summary>
+        <ol class="steps"><li>Griddle diced onions + peppers</li><li>1.5 lbs breakfast sausage</li><li>Scramble 18 eggs</li><li>Assemble: tortilla, eggs, sausage, veg, cheese</li><li>Roll tight, wrap in foil</li><li>2–3 fridge, rest freezer (~1 month)</li><li>Reheat: unwrap, damp paper towel, 90–120 sec</li></ol>
+      </details>
+      <details>
+        <summary>Ranch chicken pasta <span class="tag">dinner A</span></summary>
+        <ol class="steps"><li>Boil 1 lb pasta</li><li>In hot pot: pasta + shredded chicken + ranch + splash whole milk</li><li>Big handfuls spinach, wilts and disappears</li><li>Shredded cheese, portion</li></ol>
+      </details>
+      <details>
+        <summary>Taco beef pasta <span class="tag">dinner B</span></summary>
+        <ol class="steps"><li>Boil 1 lb pasta</li><li>Mix with taco beef + green salsa + cheese</li><li>Portion</li></ol>
+      </details>
+      <details>
+        <summary>Griddle potatoes</summary>
+        <ol class="steps"><li>Dice, toss in olive oil + salt</li><li>Griddle till crispy, or 425°F oven ~30–35 min</li></ol>
+      </details>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">Cook days</span></div>
+      <details>
+        <summary>Sunday big cook <span class="tag">~90 min · feeds Mon–Wed</span></summary>
+        <ol class="steps"><li>Pressure cooker: <b>salsa verde chicken</b> first, it runs itself</li><li>Griddle zone 1: <b>taco beef</b></li><li>Griddle zone 2 / oven: <b>potatoes + veg pan</b> at 425</li><li>Pressure cooker round 2: <b>rice</b></li><li>Griddle last: eggs + sausage, roll the <b>burrito batch</b>, foil, freeze most</li><li>Portion containers + mini bowls, fridge, done</li></ol>
+      </details>
+      <details>
+        <summary>Wednesday restock <span class="tag">~40 min · feeds Thu–Sun</span></summary>
+        <ol class="steps"><li>Fresh rice batch</li><li>One protein round</li><li>Rebuild mini bowls, burrito top-up from freezer</li><li>Fresh produce if needed</li></ol>
+      </details>
+      <div class="note">Shelf life law: cooked chicken, beef, rice, pasta = 3–4 days in the fridge. Two cook days exist so nothing you eat is ever older than 4 days. Frozen burritos = 1 month.</div>
+    </div>
+  </section>
+
+  <!-- ============ LISTS ============ -->
+  <section class="tab" id="tab-lists">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Costco · Sunday</span><button class="reset-btn" data-reset="costco">clear</button></div>
+      <div class="grp" id="list-costco"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Trader Joe's</span><button class="reset-btn" data-reset="tj">clear</button></div>
+      <div class="grp" id="list-tj"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Smith's · midweek</span><button class="reset-btn" data-reset="smiths">clear</button></div>
+      <div class="grp" id="list-smiths"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Gear still to buy</span><button class="reset-btn" data-reset="gear">clear</button></div>
+      <div class="grp" id="list-gear"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Supplements</span></div>
+      <div class="kv"><span class="k">AM · with food</span><span class="v">creatine 5g in shake · D3 · fish oil · multi</span></div>
+      <div class="kv"><span class="k">PM · with snack</span><span class="v">magnesium glycinate · ashwagandha</span></div>
+      <div class="kv"><span class="k">Melatonin</span><span class="v">0.5–1mg · weeks 1–2 only</span></div>
+      <div class="kv"><span class="k">Ashwagandha</span><span class="v">KSM-66 · 8 wks on / 2 off</span></div>
+      <div class="kv"><span class="k">Sunday night</span><span class="v">fill the pill organizer</span></div>
+      <div class="note">Never buy: test boosters, fat burners, BCAAs, greens powders, mass gainers. If something looks tempting, ask Claude first.</div>
+    </div>
+  </section>
+
+  <!-- ============ RULES ============ -->
+  <section class="tab" id="tab-rules">
+    <div class="card now">
+      <div class="card-head"><span class="card-title">The two anchors</span></div>
+      <div class="plain">
+        <p><b>1.</b> Wake at 8:00 every day. Weekends too. Alarm across the room.</p>
+        <p><b>2.</b> The phone never crosses the mattress. Dock it, then bed. Every night.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Standing rules</span></div>
+      <div class="plain">
+        <p><b>Checklist order is law.</b> Top to bottom, no skipping. Nothing else exists until the last box is checked.</p>
+        <p><b>Phone is a tool until the morning list is done.</b> Alarm, music, MacroFactor. No socials, no texting back.</p>
+        <p><b>Water:</b> a gallon a day = 5 Hydro fills. Two of them at the gym.</p>
+        <p><b>Log everything:</b> every meal in MacroFactor, every set in Hevy, weigh-in every morning.</p>
+        <p><b>Revise after living in it,</b> not before. Adjustments happen at block changes and real schedule changes.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Minimum viable morning</span></div>
+      <div class="plain"><p>If a day blows up: <b>weigh-in · make bed · water · dog walk · shake · gym.</b> Do those and the day still counts. Then get back on the full list tomorrow.</p></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">The mission</span></div>
+      <div class="kv"><span class="k">Start</span><span class="v">~190 lb · July 2026</span></div>
+      <div class="kv"><span class="k">Target</span><span class="v">225–230 lb</span></div>
+      <div class="kv"><span class="k">Timeline</span><span class="v">12–18 months · ~3 lb/month</span></div>
+      <div class="kv"><span class="k">Won in</span><span class="v">the kitchen, not the gym</span></div>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button data-tab="today" class="on"><span class="dot"></span>Today</button>
+  <button data-tab="gym"><span class="dot"></span>Gym</button>
+  <button data-tab="meals"><span class="dot"></span>Meals</button>
+  <button data-tab="lists"><span class="dot"></span>Lists</button>
+  <button data-tab="rules"><span class="dot"></span>Rules</button>
+</nav>
+
+<script>
+/* ---------- safe storage (works on home screen; falls back in previews) ---------- */
+const store={mem:{},get(k){try{return localStorage.getItem(k)}catch(e){return this.mem[k]??null}},
+set(k,v){try{localStorage.setItem(k,v)}catch(e){this.mem[k]=v}},
+del(k){try{localStorage.removeItem(k)}catch(e){delete this.mem[k]}}};
+
+/* ---------- date helpers ---------- */
+const now=new Date();
+const dkey=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const TODAY=dkey(now);
+const DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+/* ---------- program calendar ---------- */
+const WORKOUTS=["Rest · batch cook","Push A","Pull A","Legs A","Push B","Pull B","Legs B"];
+const todayWorkout=WORKOUTS[now.getDay()];
+const START=new Date(2026,6,6); /* Mon Jul 6 2026 */
+let diff=Math.max(0,Math.floor((now-START)/86400000));
+const block=Math.floor(diff/35)+1, week=Math.floor((diff%35)/7)+1;
+const weekLabel=week===5?"deload":(block===1&&week===1?"calibration":"climb");
+
+document.getElementById("hdrDate").textContent=DAYS[now.getDay()]+" · "+MONTHS[now.getMonth()]+" "+now.getDate();
+document.getElementById("hdrSub").innerHTML="Today: <b>"+todayWorkout+"</b> &nbsp;·&nbsp; Block "+block+" · Week "+week+" ("+weekLabel+")";
+document.getElementById("blockInfo").textContent="Block "+block+" · Week "+week+" · "+weekLabel;
+
+/* ---------- checklist data ---------- */
+const MORNING=[
+ ["Wake","8:00 alarm across the room, stand up to kill it"],
+ ["Wake","Bathroom"],
+ ["Wake","Weigh in, log it in MacroFactor"],
+ ["Wake","Make the bed"],
+ ["Wake","Blinds open"],
+ ["Wake","Brush teeth"],
+ ["Wake","Tongue scraper"],
+ ["Wake","Wash face, SPF on"],
+ ["Wake","Deodorant"],
+ ["Wake","Walk clothes, hat, sunglasses"],
+ ["Wake","Hydro fill 1, drink it down"],
+ ["Wake","Leash the dog"],
+ ["Walk","Dog walk 15–20 min, zero scrolling"],
+ ["Fuel","Hydro fill 2"],
+ ["Fuel","Breakfast + Monster Shake, creatine in the shake"],
+ ["Fuel","AM supps with food: D3, fish oil, multi"],
+ ["Fuel","Eat, log it all"],
+ ["Fuel","Kitchen reset, 3 min"],
+ ["Fuel","Laundry check"],
+ ["Gym","Pack bag, Hydro topped off"],
+ ["Gym","Drive to UFC FIT"],
+ ["Gym","Train · kill 2 Hydros"],
+ ["Gym","30-sec dead hang, last thing on the floor"],
+ ["Reset","Gym clothes in hamper, swap laundry"],
+ ["Reset","Shower"],
+ ["Reset","Get ready: hair, moisturizer, deodorant, brush teeth, quick check"],
+ ["Reset","Get dressed"],
+ ["Reset","Post-workout meal, log it"],
+ ["Reset","Done. Day unlocked"]
+];
+const NIGHT=[
+ ["Shutdown","Night snack + PM supps: magnesium, ashwagandha"],
+ ["Shutdown","Eat, log it"],
+ ["Shutdown","Dishes in, counter wiped"],
+ ["Prep","Walk clothes laid out"],
+ ["Prep","Gym bag packed, by the door"],
+ ["Prep","Wash Hydro, fill, fridge"],
+ ["Prep","Tomorrow check on the calendar"],
+ ["Prep","Room sweep, 5 min"],
+ ["Prep","Sunday only: fill the pill organizer"],
+ ["Wind-down","Night shower, wash face in there"],
+ ["Wind-down","Floss"],
+ ["Wind-down","Brush teeth"],
+ ["Wind-down","Night moisturizer + lip balm"],
+ ["Wind-down","Stretch, 10 min"],
+ ["Wind-down","PJs on"],
+ ["Wind-down","Sleep mode: AC cold, blackout dark"],
+ ["Wind-down","Bathroom, last stop"],
+ ["Wind-down","Phone docks across the room, alarm set"],
+ ["Wind-down","In bed, lights out"]
+];
+const FEEDS=[
+ ["8:40","Meal 1 · breakfast + start the shake"],
+ ["11:15","Meal 2 · post-workout big meal + finish shake"],
+ ["1:30","Feed 3 · mini meal"],
+ ["4:00","Feed 4 · shake 2 or mini meal"],
+ ["6:30","Feed 5 · dinner"],
+ ["9:45","Feed 6 · night snack + PM supps"]
+];
+const COSTCO=["Chicken breast","Ground beef 80/20","Breakfast sausage","Eggs, bulk","Whole milk, double gallon","Shredded cheese","Large tortillas","White rice, big bag","Pasta","Greek yogurt tub","Frozen berries","Bananas","Avocados","Peanut butter","Granola","Bagels","Honey","Olive oil","Trail mix","Protein bars","Whey: chocolate + vanilla"];
+const TJ=["Green salsa ×3 jars","Ranch","Teriyaki","Mayo","Snacks that look good"];
+const SMITHS=["Spinach","Onions","Bell peppers","Broccoli","Banana top-up","Avocado top-up"];
+const GEAR=["Pill organizer, 7-day AM/PM","Tongue scraper","Fish oil","Multivitamin","Ashwagandha KSM-66","Food scale","Meal prep containers 15-pack","Deli cups"];
+
+/* ---------- gym data ---------- */
+const PROGRAM={
+ "Push A":[["Incline DB press","4 × 5–8"],["Machine chest press","3 × 8–10"],["Seated DB shoulder press","3 × 6–8"],["Cable lateral raise","3 × 10–12"],["Cable triceps pushdown","3 × 8–10"],["Cable crunch","3 × 10–12"]],
+ "Pull A":[["Lat pulldown","4 × 6–8"],["Chest-supported row","3 × 6–8"],["DB shrugs, straps","4 × 8–10"],["Reverse pec deck","3 × 10–12"],["Preacher curl","3 × 8–10"],["Cable wrist curls","3 × 10–12"]],
+ "Legs A":[["Hack squat","4 × 5–8"],["Leg press","3 × 8–10"],["Barbell RDL","3 × 6–8"],["Leg extension","3 × 10–12"],["Seated leg curl","3 × 8–10"],["Standing calf raise","3 × 8–12"]],
+ "Push B":[["Machine shoulder press","4 × 5–8"],["Flat DB press","3 × 6–8"],["Pec deck fly","3 × 10–12"],["DB lateral raise","3 × 10–12"],["Overhead cable triceps ext","3 × 8–10"],["Rope pushdown","3 × 10–12"]],
+ "Pull B":[["Seated cable row","4 × 6–8"],["Neutral-grip lat pulldown","3 × 8–10"],["Cable shrugs","4 × 8–12"],["Face pulls","3 × 10–12"],["Hammer curls","3 × 8–10"],["Reverse cable curl","3 × 10–12"],["Hanging knee raises","3 × 10–12"]],
+ "Legs B":[["Leg press","4 × 6–8"],["Hack squat","3 × 8–10"],["Seated leg curl","4 × 8–10"],["Leg extension","3 × 10–12"],["Seated calf raise","3 × 10–12"],["Ab machine crunch","3 × 10–12"]]
+};
+const gymWrap=document.getElementById("gymDays");
+const orderedDays=["Push A","Pull A","Legs A","Push B","Pull B","Legs B"];
+orderedDays.forEach(name=>{
+  const d=document.createElement("details");
+  if(name===todayWorkout)d.open=true;
+  const dayIdx=orderedDays.indexOf(name)+1;
+  d.innerHTML="<summary>"+name+(name===todayWorkout?" <span class='tag' style='color:var(--gold)'>today</span>":" <span class='tag'>"+DAYS[dayIdx].slice(0,3)+"</span>")+"</summary>"+
+    PROGRAM[name].map(e=>"<div class='ex'><span>"+e[0]+"</span><span class='sets'>"+e[1]+"</span></div>").join("");
+  gymWrap.appendChild(d);
+});
+
+/* ---------- checklist renderer ---------- */
+function renderList(el,items,id,daily,withGroups,withNums,withTimes){
+  const key="chk:"+id+(daily?":"+TODAY:"");
+  let checked=new Set(JSON.parse(store.get(key)||"[]"));
+  el.innerHTML="";
+  let lastGrp=null;
+  items.forEach((item,i)=>{
+    const grp=withGroups?item[0]:null, txt=withGroups?item[1]:(withTimes?item[1]:item);
+    if(withGroups&&grp!==lastGrp){lastGrp=grp;const g=document.createElement("div");g.className="grp-label";g.textContent=grp;el.appendChild(g);}
+    const r=document.createElement("div");r.className="row"+(checked.has(i)?" done":"");
+    let inner="";
+    if(withNums)inner+="<span class='num'>"+(i+1)+"</span>";
+    if(withTimes)inner+="<span class='feed-time'>"+item[0]+"</span>";
+    inner+="<span class='box'></span><span class='txt'>"+txt+"</span>";
+    r.innerHTML=inner;
+    r.onclick=()=>{checked.has(i)?checked.delete(i):checked.add(i);
+      store.set(key,JSON.stringify([...checked]));
+      r.classList.toggle("done");updateCount(id,items.length,checked.size);
+      if(id==="morning")markStreak(checked.size===items.length);};
+    el.appendChild(r);
+  });
+  updateCount(id,items.length,checked.size);
+  if(id==="morning")markStreak(checked.size===items.length,true);
+  return()=>{checked=new Set();store.del(key);renderList(el,items,id,daily,withGroups,withNums,withTimes);};
+}
+function updateCount(id,total,done){
+  const c=document.getElementById("cnt-"+id),b=document.getElementById("bar-"+id);
+  if(c)c.textContent=done+" / "+total;
+  if(b)b.style.width=(done/total*100)+"%";
+}
+
+/* ---------- streak ---------- */
+function markStreak(complete,init){
+  let days=JSON.parse(store.get("days")||"[]");
+  if(complete&&!days.includes(TODAY)){days.push(TODAY);store.set("days",JSON.stringify(days));}
+  let streak=0;const d=new Date(now);
+  if(!days.includes(TODAY))d.setDate(d.getDate()-1);
+  while(days.includes(dkey(d))){streak++;d.setDate(d.getDate()-1);}
+  document.getElementById("hdrStreak").textContent=streak>0?streak+"-day streak":"day one";
+}
+
+/* ---------- build lists ---------- */
+renderList(document.getElementById("list-morning"),MORNING,"morning",true,true,true,false);
+renderList(document.getElementById("list-night"),NIGHT,"night",true,true,true,false);
+renderList(document.getElementById("list-feeds"),FEEDS,"feeds",true,false,false,true);
+const resets={};
+resets.costco=renderList(document.getElementById("list-costco"),COSTCO,"costco",false,false,false,false);
+resets.tj=renderList(document.getElementById("list-tj"),TJ,"tj",false,false,false,false);
+resets.smiths=renderList(document.getElementById("list-smiths"),SMITHS,"smiths",false,false,false,false);
+resets.gear=renderList(document.getElementById("list-gear"),GEAR,"gear",false,false,false,false);
+document.querySelectorAll(".reset-btn").forEach(b=>b.onclick=()=>resets[b.dataset.reset]());
+
+/* ---------- time-of-day highlight ---------- */
+const h=now.getHours();
+document.getElementById("card-morning").classList.toggle("now",h<13);
+document.getElementById("card-feeds").classList.toggle("now",h>=13&&h<20);
+document.getElementById("card-night").classList.toggle("now",h>=20);
+
+/* ---------- tabs ---------- */
+document.querySelectorAll("nav button").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("on"));
+    document.querySelectorAll("section.tab").forEach(s=>s.classList.remove("active"));
+    btn.classList.add("on");
+    document.getElementById("tab-"+btn.dataset.tab).classList.add("active");
+    window.scrollTo(0,0);
+  };
+});
+</script>
+</body>
+</html>
