@@ -103,14 +103,21 @@
       <div class="card-head"><span class="card-title">Morning</span><span class="card-count" id="cnt-morning"></span></div>
       <div class="bar"><i id="bar-morning"></i></div>
       <div class="grp" id="list-morning"></div>
-      <div class="note">Minimum viable morning if the day blows up: weigh-in, bed, water, walk, shake, gym.</div>
+      <div class="note">Minimum viable morning if the day blows up: weigh-in, bed, water, walk, burrito, gym.</div>
+    </div>
+
+    <div class="card" id="card-gr">
+      <div class="card-head"><span class="card-title">Gym + reset</span><span class="card-count" id="cnt-gr"></span></div>
+      <div class="bar"><i id="bar-gr"></i></div>
+      <div class="grp" id="list-gr"></div>
+      <div class="note">Sundays are rest days, this card rests too.</div>
     </div>
 
     <div class="card" id="card-feeds">
       <div class="card-head"><span class="card-title">Eating clock</span><span class="card-count" id="cnt-feeds"></span></div>
       <div class="bar"><i id="bar-feeds"></i></div>
       <div class="grp" id="list-feeds"></div>
-      <div class="note">Three alarms labeled FEED: 1:30, 4:00, 6:30. When one fires, eat within 15 minutes. Times shift when job hours land.</div>
+      <div class="note">No clock, no alarms. Check each feed off as it happens and MacroFactor keeps the score. All six checked = the day is fed.</div>
     </div>
 
     <div class="card" id="card-night">
@@ -156,79 +163,114 @@
   <!-- ============ MEALS ============ -->
   <section class="tab" id="tab-meals">
     <div class="card">
-      <div class="kv"><span class="k">Opening targets</span><span class="v">~3,900–4,100 kcal · 210g+ protein</span></div>
-      <div class="kv"><span class="k">Rate</span><span class="v">+0.75 lb/week · MacroFactor adjusts</span></div>
-      <div class="kv"><span class="k">Core rule</span><span class="v">cook 2 days · microwave · sauce after</span></div>
+      <div class="kv"><span class="k">Target</span><span class="v">~3,700 kcal · 190–220g protein</span></div>
+      <div class="kv"><span class="k">The boss</span><span class="v">MacroFactor · weekly trend, not one weigh-in</span></div>
+      <div class="kv"><span class="k">Core rule</span><span class="v">one Sunday cook · freeze · thaw nightly</span></div>
+      <div class="kv"><span class="k">Weekly prep</span><span class="v">12 burritos · 6 beef · 6 chicken · 3 pasta</span></div>
     </div>
 
     <div class="card">
-      <div class="card-head"><span class="card-title">Shakes</span></div>
+      <div class="card-head"><span class="card-title">Night shake · daily</span></div>
       <details open>
-        <summary>Monster shake <span class="tag">~1,050 kcal · 70g P · daily</span></summary>
-        <ol class="steps"><li>2 cups whole milk</li><li>2 scoops chocolate whey</li><li>1 banana</li><li>2 tbsp peanut butter</li><li>1/2 cup quick oats</li><li>1 tbsp honey + ice</li><li><b>5g creatine</b></li></ol>
+        <summary>The recipe <span class="tag">~850–1,000 kcal</span></summary>
+        <ol class="steps"><li>16 oz Fairlife milk</li><li>2 scoops protein powder</li><li>1 banana</li><li>2 tbsp peanut butter</li><li>1/2 cup old fashioned oats</li><li><b>5g creatine</b>, PM supps alongside</li></ol>
       </details>
       <details>
-        <summary>Shake 2 · vanilla berry <span class="tag">~600 kcal · lever 1</span></summary>
-        <ol class="steps"><li>1.5 cups whole milk</li><li>1 scoop vanilla whey</li><li>1 cup frozen berries</li><li>Big spoon Greek yogurt</li><li>Honey</li></ol>
+        <summary>Calorie upgrades <span class="tag">when the target rises</span></summary>
+        <div class="kv"><span class="k">+1 tbsp PB</span><span class="v">+90–100</span></div>
+        <div class="kv"><span class="k">+1/2 cup oats</span><span class="v">+150</span></div>
+        <div class="kv"><span class="k">Honey</span><span class="v">+60–120</span></div>
+        <div class="kv"><span class="k">Extra banana</span><span class="v">+100</span></div>
+        <div class="kv"><span class="k">Second smaller shake</span><span class="v">+400–600</span></div>
       </details>
     </div>
 
     <div class="card">
-      <div class="card-head"><span class="card-title">The menu</span></div>
-      <div class="kv"><span class="k">Breakfast A</span><span class="v">breakfast burrito + green salsa</span></div>
-      <div class="kv"><span class="k">Breakfast B</span><span class="v">egg · beef · potato bowl</span></div>
-      <div class="kv"><span class="k">Post-gym A</span><span class="v">beef burrito bowl</span></div>
-      <div class="kv"><span class="k">Post-gym B</span><span class="v">salsa verde chicken bowl</span></div>
-      <div class="kv"><span class="k">Dinner A</span><span class="v">ranch chicken pasta + spinach</span></div>
-      <div class="kv"><span class="k">Dinner B</span><span class="v">cheesy taco beef pasta</span></div>
-      <div class="kv"><span class="k">Mini meals</span><span class="v">mini bowls · burrito · yogurt bowl · PB bagel</span></div>
-      <div class="kv"><span class="k">Night snack</span><span class="v">yogurt bowl or PB toast + milk</span></div>
-      <div class="note">Sauces: green salsa, ranch, mayo, teriyaki. Never: ketchup, mustard, pickles, olives. Avocado sliced fresh, granola added at eat time.</div>
+      <div class="card-head"><span class="card-title">The day · ~3,700</span></div>
+      <div class="kv"><span class="k">Breakfast</span><span class="v">burrito · 700–850</span></div>
+      <div class="kv"><span class="k">Post-gym</span><span class="v">beef bowl · 850–1,050</span></div>
+      <div class="kv"><span class="k">Snack</span><span class="v">snack station · 300–600</span></div>
+      <div class="kv"><span class="k">Dinner</span><span class="v">chicken bowl or pasta · 850–1,050</span></div>
+      <div class="kv"><span class="k">Night</span><span class="v">the shake · 850–1,000</span></div>
+      <div class="note">Salsa and sauces go on after reheating. Never: ketchup, mustard, pickles, olives. Numbers are estimates, package labels in MacroFactor are the truth.</div>
     </div>
 
     <div class="card">
-      <div class="card-head"><span class="card-title">Cooking</span></div>
+      <div class="card-head"><span class="card-title">Snack station</span></div>
+      <div class="kv"><span class="k">Short ~200</span><span class="v">banana · extra cheese · extra PB</span></div>
+      <div class="kv"><span class="k">Short ~400</span><span class="v">PB sandwich · Fairlife + jerky</span></div>
+      <div class="kv"><span class="k">Short ~700</span><span class="v">extra burrito · second shake</span></div>
+      <div class="note">Stocked: cottage cheese, beef jerky, Fairlife, peanut butter, bananas. Pick based on what MacroFactor says you still need, not a fixed snack.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">Recipe cards · exact portions</span></div>
       <details>
-        <summary>Salsa verde chicken <span class="tag">pressure cooker</span></summary>
-        <ol class="steps"><li>3 lbs chicken breast in the pot</li><li>Full 12 oz jar TJ green salsa + big pinch salt</li><li>High pressure <b>12 min</b>, natural release 5, then vent</li><li>Shred with two forks, stir into the juices</li><li>Portion. The sauce keeps it juicy all week</li></ol>
+        <summary>Breakfast burritos ×12 <span class="tag">700–850 kcal</span></summary>
+        <ol class="steps"><li>Per burrito: <b>2 eggs · 2 oz cooked sausage · 100g hash browns · 28g cheese · 1 large tortilla</b></li><li>Sausage first, weigh it cooked</li><li>Scramble 24 eggs slightly soft, they finish in the reheat</li><li>Hash browns cooked until browned so nothing goes soggy</li><li>Tortilla on the scale, tare, build to the exact amounts</li><li>Roll tight, wrap in foil, label with date</li><li>Don't overfill, overstuffed burritos burst in the microwave</li><li>2–3 to the fridge, freeze the rest</li></ol>
       </details>
       <details>
-        <summary>Taco beef <span class="tag">griddle</span></summary>
-        <ol class="steps"><li>3 lbs 80/20 ground beef, brown and break up</li><li>Drain only some fat</li><li>Taco seasoning + splash water, 2 min</li><li>Portion</li></ol>
+        <summary>Beef rice bowls ×6 <span class="tag">850–1,050 kcal</span></summary>
+        <ol class="steps"><li>Per bowl: <b>227g cooked 93/7 beef · 300g cooked rice · 100g broccoli · 28g cheese</b></li><li>Brown ~4 lbs beef, taco seasoning + garlic + onion powder</li><li>Drain only if really greasy, some fat is calories</li><li>Container on the scale, tare, build each one identical</li><li>Green salsa stays out until after reheating</li></ol>
       </details>
       <details>
-        <summary>White rice <span class="tag">pressure cooker</span></summary>
-        <ol class="steps"><li>4 cups rice, rinsed</li><li>1:1 water, pinch of salt</li><li>High pressure <b>4 min</b>, natural release 10</li><li>Reheat rule: splash of water, lid cracked</li></ol>
+        <summary>Chicken bowls ×6 <span class="tag">850–1,000 kcal</span></summary>
+        <ol class="steps"><li>Per bowl: <b>227g cooked chicken · 300g cooked rice · 100g corn · 28g cheese</b></li><li>Season ~5 lbs breast: olive oil, salt, pepper, garlic, onion, paprika</li><li>Bake at 425°F until 165°F internal, thermometer in the thickest piece</li><li>Rest 10 min, dice, portion on the scale</li></ol>
       </details>
       <details>
-        <summary>Breakfast burritos <span class="tag">batch of 10–12</span></summary>
-        <ol class="steps"><li>Griddle diced onions + peppers</li><li>1.5 lbs breakfast sausage</li><li>Scramble 18 eggs</li><li>Assemble: tortilla, eggs, sausage, veg, cheese</li><li>Roll tight, wrap in foil</li><li>2–3 fridge, rest freezer (~1 month)</li><li>Reheat: unwrap, damp paper towel, 90–120 sec</li></ol>
+        <summary>Protein pasta ×3 <span class="tag">800–1,000 kcal</span></summary>
+        <ol class="steps"><li>Per bowl: <b>300g cooked pasta · 5–6 oz beef · 125–150g sauce · big handful spinach · 28g cheese</b></li><li>Boil 1 lb pasta, brown the pasta's share of the beef</li><li>Sauce into the beef, spinach in until it wilts and disappears</li><li>Pasta in, splash of pasta water if thick, portion into 3</li><li>Pasta lives in the fridge, freezing wrecks the texture</li></ol>
       </details>
       <details>
-        <summary>Ranch chicken pasta <span class="tag">dinner A</span></summary>
-        <ol class="steps"><li>Boil 1 lb pasta</li><li>In hot pot: pasta + shredded chicken + ranch + splash whole milk</li><li>Big handfuls spinach, wilts and disappears</li><li>Shredded cheese, portion</li></ol>
-      </details>
-      <details>
-        <summary>Taco beef pasta <span class="tag">dinner B</span></summary>
-        <ol class="steps"><li>Boil 1 lb pasta</li><li>Mix with taco beef + green salsa + cheese</li><li>Portion</li></ol>
-      </details>
-      <details>
-        <summary>Griddle potatoes</summary>
-        <ol class="steps"><li>Dice, toss in olive oil + salt</li><li>Griddle till crispy, or 425°F oven ~30–35 min</li></ol>
+        <summary>Rice batch <span class="tag">pressure cooker</span></summary>
+        <ol class="steps"><li>Jasmine rice for 12 bowls plus buffer, rinsed, 1:1 water, pinch of salt</li><li>High pressure 4 min, natural release 10</li><li>Weigh 300g cooked into every bowl</li></ol>
       </details>
     </div>
 
     <div class="card">
-      <div class="card-head"><span class="card-title">Cook days</span></div>
+      <div class="card-head"><span class="card-title">Sunday cook · run sheet</span></div>
       <details>
-        <summary>Sunday big cook <span class="tag">~90 min · feeds Mon–Wed</span></summary>
-        <ol class="steps"><li>Pressure cooker: <b>salsa verde chicken</b> first, it runs itself</li><li>Griddle zone 1: <b>taco beef</b></li><li>Griddle zone 2 / oven: <b>potatoes + veg pan</b> at 425</li><li>Pressure cooker round 2: <b>rice</b></li><li>Griddle last: eggs + sausage, roll the <b>burrito batch</b>, foil, freeze most</li><li>Portion containers + mini bowls, fridge, done</li></ol>
+        <summary>The timeline <span class="tag">9:00 → 12:30</span></summary>
+        <ol class="steps"><li><b>9:00</b> Kitchen reset: scale, containers, skillet, pot, foil out</li><li><b>9:10</b> Rice into the pressure cooker</li><li><b>9:15</b> Oven to 425</li><li><b>9:20</b> Season the chicken</li><li><b>9:30</b> Chicken in, bake to 165</li><li><b>9:35</b> Brown and season the beef</li><li><b>9:55</b> Pasta water on</li><li><b>10:05</b> Cook the sausage</li><li><b>10:15</b> Cook pasta, drain</li><li><b>10:25</b> Scramble 24 eggs, slightly soft</li><li><b>10:40</b> Hash browns until browned</li><li><b>10:50</b> Pasta mix: pasta, beef, sauce, spinach → 3 containers</li><li><b>11:05</b> Rest and dice the chicken</li><li><b>11:15</b> Portion 6 beef bowls on the scale</li><li><b>11:30</b> Portion 6 chicken bowls</li><li><b>11:45</b> Assemble 12 burritos on the scale, wrap, label</li><li><b>12:15</b> Mon–Wed food to fridge, everything else to freezer</li><li><b>12:25</b> Clean kitchen, update MacroFactor recipes</li></ol>
       </details>
-      <details>
-        <summary>Wednesday restock <span class="tag">~40 min · feeds Thu–Sun</span></summary>
-        <ol class="steps"><li>Fresh rice batch</li><li>One protein round</li><li>Rebuild mini bowls, burrito top-up from freezer</li><li>Fresh produce if needed</li></ol>
-      </details>
-      <div class="note">Shelf life law: cooked chicken, beef, rice, pasta = 3–4 days in the fridge. Two cook days exist so nothing you eat is ever older than 4 days. Frozen burritos = 1 month.</div>
+      <div class="note">First Sunday will run long, that's normal. By week three it's muscle memory.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">Storage + reheating</span></div>
+      <div class="kv"><span class="k">Fridge</span><span class="v">3–4 days max, all cooked food</span></div>
+      <div class="kv"><span class="k">Freezer</span><span class="v">bowls + burritos 2–3 months</span></div>
+      <div class="kv"><span class="k">Every night</span><span class="v">tomorrow's meals: freezer → fridge</span></div>
+      <div class="kv"><span class="k">Bowls</span><span class="v">splash of water, covered, stir halfway</span></div>
+      <div class="kv"><span class="k">Burrito, fridge</span><span class="v">60–90 sec</span></div>
+      <div class="kv"><span class="k">Burrito, frozen</span><span class="v">2–3 min, skillet-crisp after if you want</span></div>
+      <div class="kv"><span class="k">Always</span><span class="v">salsa and sauces after heating</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">Flavor rotations</span></div>
+      <div class="kv"><span class="k">Beef bowl</span><span class="v">green salsa · BBQ · teriyaki</span></div>
+      <div class="kv"><span class="k">Chicken bowl</span><span class="v">salsa verde · honey garlic · garlic parm</span></div>
+      <div class="kv"><span class="k">Pasta</span><span class="v">marinara · vodka sauce · spicy</span></div>
+      <div class="note">Base portions never change, only sauces rotate. Heavy sauce or oil gets logged.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">Emergency meals</span></div>
+      <div class="kv"><span class="k">Costco</span><span class="v">rotisserie chicken + rice · Fairlife + banana + jerky</span></div>
+      <div class="kv"><span class="k">Trader Joe's</span><span class="v">frozen orange chicken + rice · frozen burritos</span></div>
+      <div class="kv"><span class="k">Smith's</span><span class="v">deli chicken + microwave rice · PB sandwich</span></div>
+      <div class="note">Shift meals at work count: protein + carbs + a calorie booster, log a reasonable estimate, keep the trend moving. A rough log beats no log.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">MacroFactor recipes</span></div>
+      <div class="kv"><span class="k">Breakfast Burrito v2</span><span class="v">12 servings</span></div>
+      <div class="kv"><span class="k">Beef Bowl v2</span><span class="v">6 servings</span></div>
+      <div class="kv"><span class="k">Chicken Bowl v2</span><span class="v">6 servings</span></div>
+      <div class="kv"><span class="k">Pasta Bowl v2</span><span class="v">3 servings</span></div>
+      <div class="kv"><span class="k">Night Shake</span><span class="v">1 serving · log nightly</span></div>
+      <div class="note">Scan the exact packages, enter the batch totals, set servings to containers made, log 1 serving per container. New label next week = update the recipe, never guess.</div>
     </div>
   </section>
 
@@ -243,7 +285,7 @@
       <div class="grp" id="list-tj"></div>
     </div>
     <div class="card">
-      <div class="card-head"><span class="card-title">Smith's · midweek</span><button class="reset-btn" data-reset="smiths">clear</button></div>
+      <div class="card-head"><span class="card-title">Smith's · backup only</span><button class="reset-btn" data-reset="smiths">clear</button></div>
       <div class="grp" id="list-smiths"></div>
     </div>
     <div class="card">
@@ -252,11 +294,11 @@
     </div>
     <div class="card">
       <div class="card-head"><span class="card-title">Supplements</span></div>
-      <div class="kv"><span class="k">AM · with food</span><span class="v">creatine 5g in shake · D3 · fish oil · multi</span></div>
-      <div class="kv"><span class="k">PM · with snack</span><span class="v">magnesium glycinate · ashwagandha</span></div>
+      <div class="kv"><span class="k">AM · with food</span><span class="v">D3 · fish oil · multi</span></div>
+      <div class="kv"><span class="k">PM · in the shake</span><span class="v">creatine 5g · magnesium · ashwagandha</span></div>
       <div class="kv"><span class="k">Melatonin</span><span class="v">0.5–1mg · weeks 1–2 only</span></div>
       <div class="kv"><span class="k">Ashwagandha</span><span class="v">KSM-66 · 8 wks on / 2 off</span></div>
-      <div class="kv"><span class="k">Sunday night</span><span class="v">fill the pill organizer</span></div>
+      <div class="kv"><span class="k">The habit</span><span class="v">bottles live visible: AM by breakfast, PM by the blender</span></div>
       <div class="note">Never buy: test boosters, fat burners, BCAAs, greens powders, mass gainers. If something looks tempting, ask Claude first.</div>
     </div>
   </section>
@@ -266,7 +308,7 @@
     <div class="card now">
       <div class="card-head"><span class="card-title">The two anchors</span></div>
       <div class="plain">
-        <p><b>1.</b> Wake at 8:00 every day. Weekends too. Alarm across the room.</p>
+        <p><b>1.</b> The day starts the moment you wake: no phone in bed, feet on the floor, checklist from step 1.</p>
         <p><b>2.</b> The phone never crosses the mattress. Dock it, then bed. Every night.</p>
       </div>
     </div>
@@ -274,7 +316,7 @@
       <div class="card-head"><span class="card-title">Standing rules</span></div>
       <div class="plain">
         <p><b>Checklist order is law.</b> Top to bottom, no skipping. Nothing else exists until the last box is checked.</p>
-        <p><b>Phone is a tool until the morning list is done.</b> Alarm, music, MacroFactor. No socials, no texting back.</p>
+        <p><b>Phone is a tool until gym + reset is done.</b> Music and MacroFactor only. No socials, no texting back.</p>
         <p><b>Water:</b> a gallon a day = 5 Hydro fills. Two of them at the gym.</p>
         <p><b>Log everything:</b> every meal in MacroFactor, every set in Hevy, weigh-in every morning.</p>
         <p><b>Revise after living in it,</b> not before. Adjustments happen at block changes and real schedule changes.</p>
@@ -282,7 +324,7 @@
     </div>
     <div class="card">
       <div class="card-head"><span class="card-title">Minimum viable morning</span></div>
-      <div class="plain"><p>If a day blows up: <b>weigh-in · make bed · water · dog walk · shake · gym.</b> Do those and the day still counts. Then get back on the full list tomorrow.</p></div>
+      <div class="plain"><p>If a day blows up: <b>weigh-in · make bed · water · dog walk · burrito · gym.</b> Do those and the day still counts. Then get back on the full list tomorrow.</p></div>
     </div>
     <div class="card">
       <div class="card-head"><span class="card-title">The mission</span></div>
@@ -329,7 +371,7 @@ document.getElementById("blockInfo").textContent="Block "+block+" · Week "+week
 
 /* ---------- checklist data ---------- */
 const MORNING=[
- ["Wake","8:00 alarm across the room, stand up to kill it"],
+ ["Wake","Up the moment you wake: no phone in bed, feet on the floor"],
  ["Wake","Bathroom"],
  ["Wake","Weigh in, log it in MacroFactor"],
  ["Wake","Make the bed"],
@@ -343,11 +385,14 @@ const MORNING=[
  ["Wake","Leash the dog"],
  ["Walk","Dog walk 15–20 min, zero scrolling"],
  ["Fuel","Hydro fill 2"],
- ["Fuel","Breakfast + Monster Shake, creatine in the shake"],
+ ["Fuel","Breakfast burrito, green salsa on after heating"],
  ["Fuel","AM supps with food: D3, fish oil, multi"],
  ["Fuel","Eat, log it all"],
  ["Fuel","Kitchen reset, 3 min"],
  ["Fuel","Laundry check"],
+ ["Fuel","Morning done"]
+];
+const GYMRESET=[
  ["Gym","Pack bag, Hydro topped off"],
  ["Gym","Drive to UFC FIT"],
  ["Gym","Train · kill 2 Hydros"],
@@ -360,15 +405,16 @@ const MORNING=[
  ["Reset","Done. Day unlocked"]
 ];
 const NIGHT=[
- ["Shutdown","Night snack + PM supps: magnesium, ashwagandha"],
- ["Shutdown","Eat, log it"],
+ ["Shutdown","Night shake: 16 oz Fairlife, 2 scoops, banana, PB, oats"],
+ ["Shutdown","5g creatine in the shake + PM supps: magnesium, ashwagandha"],
+ ["Shutdown","Drink it, log it"],
  ["Shutdown","Dishes in, counter wiped"],
  ["Prep","Walk clothes laid out"],
  ["Prep","Gym bag packed, by the door"],
  ["Prep","Wash Hydro, fill, fridge"],
+ ["Prep","Tomorrow's meals: freezer to fridge"],
  ["Prep","Tomorrow check on the calendar"],
  ["Prep","Room sweep, 5 min"],
- ["Prep","Sunday only: fill the pill organizer"],
  ["Wind-down","Night shower, wash face in there"],
  ["Wind-down","Floss"],
  ["Wind-down","Brush teeth"],
@@ -381,17 +427,17 @@ const NIGHT=[
  ["Wind-down","In bed, lights out"]
 ];
 const FEEDS=[
- ["8:40","Meal 1 · breakfast + start the shake"],
- ["11:15","Meal 2 · post-workout big meal + finish shake"],
- ["1:30","Feed 3 · mini meal"],
- ["4:00","Feed 4 · shake 2 or mini meal"],
- ["6:30","Feed 5 · dinner"],
- ["9:45","Feed 6 · night snack + PM supps"]
+ "Feed 1 · breakfast burrito",
+ "Feed 2 · post-workout beef bowl",
+ "Feed 3 · snack station",
+ "Feed 4 · flex feed if calories are short",
+ "Feed 5 · dinner · chicken bowl or pasta",
+ "Feed 6 · night shake + PM supps"
 ];
-const COSTCO=["Chicken breast","Ground beef 80/20","Breakfast sausage","Eggs, bulk","Whole milk, double gallon","Shredded cheese","Large tortillas","White rice, big bag","Pasta","Greek yogurt tub","Frozen berries","Bananas","Avocados","Peanut butter","Granola","Bagels","Honey","Olive oil","Trail mix","Protein bars","Whey: chocolate + vanilla"];
-const TJ=["Green salsa ×3 jars","Ranch","Teriyaki","Mayo","Snacks that look good"];
-const SMITHS=["Spinach","Onions","Bell peppers","Broccoli","Banana top-up","Avocado top-up"];
-const GEAR=["Pill organizer, 7-day AM/PM","Tongue scraper","Fish oil","Multivitamin","Ashwagandha KSM-66","Food scale","Meal prep containers 15-pack","Deli cups"];
+const COSTCO=["93/7 ground beef, ~6 lb","Chicken breast, ~5 lb","Eggs, 24+","Breakfast sausage, ~2 lb","Fairlife milk ×3","Protein powder","Cottage cheese, large tub","Beef jerky","Jasmine rice, big bag","Frozen hash browns, 3 lb","Old fashioned oats","Bananas, 10–14","Shredded Mexican cheese, 2 lb","Peanut butter","Olive oil","Frozen broccoli, 2 lb+","Frozen corn, 2 lb+"];
+const TJ=["Large flour tortillas, 12+","Green salsa ×2","Taco seasoning","Pasta, 1 lb","Pasta sauce, 1 jar","Spinach","Parmesan or mozzarella, optional"];
+const SMITHS=["Spice top-ups: garlic, onion, paprika, chili","Foil, parchment, freezer bags","Labels or masking tape","Backup salsa","Whatever the other stores were out of"];
+const GEAR=["Tongue scraper","Fish oil","Multivitamin","Ashwagandha KSM-66","Food scale","Meal prep containers 15-pack","Deli cups","Meat thermometer","Freezer bags + labels"];
 
 /* ---------- gym data ---------- */
 const PROGRAM={
@@ -456,8 +502,9 @@ function markStreak(complete,init){
 
 /* ---------- build lists ---------- */
 renderList(document.getElementById("list-morning"),MORNING,"morning",true,true,true,false);
+renderList(document.getElementById("list-gr"),GYMRESET,"gr",true,true,true,false);
 renderList(document.getElementById("list-night"),NIGHT,"night",true,true,true,false);
-renderList(document.getElementById("list-feeds"),FEEDS,"feeds",true,false,false,true);
+renderList(document.getElementById("list-feeds"),FEEDS,"feeds",true,false,false,false);
 const resets={};
 resets.costco=renderList(document.getElementById("list-costco"),COSTCO,"costco",false,false,false,false);
 resets.tj=renderList(document.getElementById("list-tj"),TJ,"tj",false,false,false,false);
@@ -467,7 +514,8 @@ document.querySelectorAll(".reset-btn").forEach(b=>b.onclick=()=>resets[b.datase
 
 /* ---------- time-of-day highlight ---------- */
 const h=now.getHours();
-document.getElementById("card-morning").classList.toggle("now",h<13);
+document.getElementById("card-morning").classList.toggle("now",h<10);
+document.getElementById("card-gr").classList.toggle("now",h>=10&&h<13&&now.getDay()!==0);
 document.getElementById("card-feeds").classList.toggle("now",h>=13&&h<20);
 document.getElementById("card-night").classList.toggle("now",h>=20);
 
